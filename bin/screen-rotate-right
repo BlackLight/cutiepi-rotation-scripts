@@ -1,0 +1,14 @@
+#!/bin/bash
+
+script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+source "$script_dir/cutiepi-screen-common"
+
+cur_rotation=$(screen_rotation)
+
+case "$cur_rotation" in
+    left) screen_set_vertical;;
+    right) screen_set_vertical_inverted;;
+    normal) screen_set_horizontal_inverted;;
+    inverted) screen_set_horizontal;;
+esac
+

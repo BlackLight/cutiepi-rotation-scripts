@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Ensure that the display variable is set
+export DISPLAY=:0
+
+screen_rotation() {
+    cur_rotation=$(xrandr --query --verbose | grep DSI-1 | cut -d ' ' -f 5)
+    echo $cur_rotation
+}
+
+screen_set_horizontal() {
+    xrandr --output DSI-1 --rotate left
+    xinput set-prop 11 "Coordinate Transformation Matrix" 0 -1 1 1 0 0 0 0 1
+}
+
+screen_set_vertical() {
+    xrandr --output DSI-1 --rotate normal
+    xinput set-prop 11 "Coordinate Transformation Matrix" 1 0 0 0 1 0 0 0 1
+}
+
+screen_set_horizontal_inverted() {
+    xrandr --output DSI-1 --rotate right
+    xinput set-prop 11 "Coordinate Transformation Matrix" 0 1 0 -1 0 1 0 0 1
+}
+
+screen_set_vertical_inverted() {
+    xrandr --output DSI-1 --rotate inverted
+    xinput set-prop 11 "Coordinate Transformation Matrix" -1 0 1 0 -1 1 0 0 1
+}
+

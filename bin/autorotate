@@ -1,0 +1,25 @@
+#!/bin/bash
+
+script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+source "$script_dir/cutiepi-screen-common"
+
+# Turn off the HDMI interface. This actually shouldn't be required, but taking
+# the second display into account would make the xinput coordinate transformation
+# matrices more complex (TODO it can be tackled later if there's enough demand for
+# screen rotation features while the tablet is attached to another screen)
+xrandr --output HDMI-2 --off
+
+# Default rotation: standard horizontal
+screen_set_horizontal
+
+monitor-sensor | while read line; do
+    echo "$line" | egrep '^\s*Accelerometer orientation changed: ' >/dev/null || continue
+    orientation=$(echo "$line" | awk '{print $4}')
+    case "$orientation" in
+        left-up) screen_set_horizontal;;
+        normal) screen_set_vertical;;
+        right-up) screen_set_horizontal_inverted;;
+        bottom-up) screen_set_vertical_inverted;;
+    esac
+done
+

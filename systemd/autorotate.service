@@ -1,0 +1,19 @@
+# Copy or symlink this systemd service to ~/.config/systemd/user
+# (create the folder if it doesn't exist).
+# Start with: systemctl --user start autorotate
+# Stop with: systemctl --user stop autorotate
+# Enable at startup with: systemctl --user enable autorotate
+# Disable at startup with: systemctl --user disable autorotate
+
+[Unit]
+Description=Manage screen auto-rotation on a CutiePi tablet
+After=graphical.target
+
+[Service]
+ExecStart=/home/pi/bin/autorotate
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
+
