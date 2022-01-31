@@ -1,5 +1,12 @@
 #!/bin/bash
 
+pidfile=/tmp/autorotate.pid
+if ps -p $(cat "$pidfile" 2>/dev/null) >/dev/null; then
+    echo "An autorotate process is already running - if not please remove $pidfile" >&2
+    exit 1
+fi
+
+echo $$ > "$pidfile"
 script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 source "$script_dir/cutiepi-screen-common"
 
